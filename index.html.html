@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>퇴원 안내 - 노인 친화적 인터페이스</title>
+    <style>
+        /* 기본 설정 - 노인 친화적 디자인 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            font-size: 23px;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background-color: #ffffff;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* 제목 스타일 */
+        .main-title {
+            font-size: 46px;
+            font-weight: bold;
+            text-align: center;
+            color: #1a1a1a;
+            margin-bottom: 40px;
+            padding: 30px;
+            background-color: #f9f9f9;
+            border: 3px solid #4a90e2;
+            border-radius: 15px;
+        }
+
+        .subtitle {
+            font-size: 29px;
+            font-weight: bold;
+            color: #4a90e2;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* 퇴원 절차 카드 */
+        .step-container {
+            display: grid;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .step-card {
+            background-color: #ffffff;
+            border: 3px solid #4a90e2;
+            border-radius: 15px;
+            padding: 30px;
+            min-height: 200px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .step-card:hover {
+            background-color: #f0f8ff;
+            border-color: #2c5aa0;
+            box-shadow: 0 8px 16px rgba(74, 144, 226, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background-color: #4a90e2;
+            color: white;
+            font-size: 33px;
+            font-weight: bold;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 60px;
+            margin-bottom: 20px;
+        }
+
+        .step-title {
+            font-size: 29px;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+
+        .step-description {
+            font-size: 25px;
+            color: #1a1a1a;
+            line-height: 1.7;
+        }
+
+        /* 중요 정보 강조 */
+        .important-info {
+            background-color: #fff5f5;
+            border: 3px solid #e74c3c;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .important-title {
+            font-size: 31px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .important-title::before {
+            content: "⚠️";
+            font-size: 37px;
+            margin-right: 15px;
+        }
+
+        .important-text {
+            font-size: 25px;
+            color: #1a1a1a;
+            line-height: 1.7;
+        }
+
+        /* 축하 메시지 스타일 */
+        .congratulations {
+            background: linear-gradient(135deg, #FFE5F1 0%, #E5F3FF 30%, #F0E5FF 60%, #FFE5E5 100%);
+            border: 3px solid #FF69B4;
+            border-radius: 25px;
+            padding: 50px;
+            margin-top: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(255, 105, 180, 0.2);
+        }
+
+        .congratulations-title {
+            font-size: 37px;
+            font-weight: bold;
+            color: #2D1B69;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(255,255,255,0.9);
+        }
+
+        .sparkle {
+            font-size: 29px;
+            animation: sparkle 1.5s ease-in-out infinite;
+            display: inline-block;
+            margin: 0 10px;
+            filter: drop-shadow(2px 2px 4px rgba(255, 215, 0, 0.6));
+        }
+
+        .firework {
+            position: absolute;
+            font-size: 37px;
+            animation: firework 2s ease-in-out infinite;
+            filter: drop-shadow(3px 3px 6px rgba(255, 69, 180, 0.4));
+        }
+
+        .firework:nth-child(1) {
+            top: 10px;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .firework:nth-child(2) {
+            top: 10px;
+            right: 10%;
+            animation-delay: 0.5s;
+        }
+
+        .firework:nth-child(3) {
+            bottom: 10px;
+            left: 15%;
+            animation-delay: 1s;
+        }
+
+        .firework:nth-child(4) {
+            bottom: 10px;
+            right: 15%;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.2) rotate(180deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes firework {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.8);
+                opacity: 0.6;
+            }
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+                font-size: 25px;
+            }
+
+            .main-title {
+                font-size: 42px;
+                padding: 25px;
+            }
+
+            .step-card {
+                padding: 25px;
+                min-height: 180px;
+            }
+
+            .step-number {
+                width: 50px;
+                height: 50px;
+                font-size: 29px;
+                line-height: 50px;
+            }
+
+            .step-title {
+                font-size: 27px;
+            }
+
+            .step-description {
+                font-size: 23px;
+            }
+
+            .congratulations-title {
+                font-size: 33px;
+            }
+
+            .sparkle {
+                font-size: 25px;
+            }
+
+            .firework {
+                font-size: 33px;
+            }
+        }
+
+        /* 확대 지원 (200%까지) */
+        @media (min-resolution: 2dppx) {
+            body {
+                font-size: 25px;
+            }
+        }
+
+        /* 고대비 모드 지원 */
+        @media (prefers-contrast: high) {
+            .step-card {
+                border-width: 4px;
+            }
+        }
+
+        /* 애니메이션 감소 설정 */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-title">
+        🏥 퇴원 안내
+    </div>
+
+    <div class="subtitle">
+        퇴원은 다음과 같은 순서로 이루어집니다
+    </div>
+
+    <div class="step-container" id="steps-container">
+        <!-- 퇴원 절차 단계들이 여기에 동적으로 추가됩니다 -->
+    </div>
+
+    <div class="important-info">
+        <div class="important-title">중요한 안내사항</div>
+        <div class="important-text">
+            • 퇴원 전 담당 간호사의 설명을 꼭 들어주세요<br>
+            • 처방약과 다음 진료 예약증을 잊지 마세요<br>
+            • 궁금한 점이 있으시면 언제든 문의해 주세요
+        </div>
+    </div>
+
+    <div class="congratulations">
+        <div class="firework">🎆</div>
+        <div class="firework">🎇</div>
+        <div class="firework">🎆</div>
+        <div class="firework">🎇</div>
+        
+        <div class="congratulations-title">
+            <span class="sparkle">✨</span>
+            퇴원을 진심으로 축하드립니다.<br>
+            건강하세요.
+            <span class="sparkle">✨</span>
+        </div>
+    </div>
+
+    <script>
+        // 퇴원 절차 데이터
+        const dischargeSteps = [
+            {
+                number: 1,
+                emoji: "👨‍⚕️",
+                title: "담당의사 퇴원결정",
+                description: "담당의사가 퇴원 결정을 하면 병동에서 담당 간호사가 퇴원절차를 안내해 드립니다.",
+                completed: false
+            },
+            {
+                number: 2,
+                emoji: "📋",
+                title: "퇴원심사완료후 퇴원 수납청구 안내",
+                description: "퇴원심사가 완료되면 병실로 연락이 옵니다.",
+                completed: false
+            },
+            {
+                number: 3,
+                emoji: "💳",
+                title: "퇴원비 수납",
+                description: "1층 퇴원수납창구에서 퇴원수납을 진행하시면 됩니다.",
+                completed: false
+            },
+            {
+                number: 4,
+                emoji: "👩‍⚕️",
+                title: "병동 간호사 퇴원 안내 및 주의사항",
+                description: "담당 간호사에게 퇴원 약 받으시고 퇴원 후 주의사항에 관한 설명을 들으시면 됩니다.",
+                completed: false
+            },
+            {
+                number: 5,
+                emoji: "🏠",
+                title: "외래 예약증 확인 후 귀가",
+                description: "다음 진료 예약일 확인 후 귀가하시면 됩니다.",
+                completed: false
+            }
+        ];
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            renderSteps();
+        });
+
+        // 단계별 카드 렌더링
+        function renderSteps() {
+            const container = document.getElementById('steps-container');
+            container.innerHTML = '';
+
+            dischargeSteps.forEach((step, index) => {
+                const stepCard = document.createElement('div');
+                stepCard.className = 'step-card';
+                stepCard.onclick = () => toggleStep(index);
+                
+                const completedStyle = step.completed ? 
+                    'background-color: #d4edda; border-color: #28a745;' : '';
+                
+                const numberStyle = step.completed ? 
+                    'background-color: #28a745;' : '';
+
+                stepCard.innerHTML = `
+                    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                        <div class="step-number" style="${numberStyle}">
+                            ${step.completed ? '✓' : step.number}
+                        </div>
+                        <div style="font-size: 41px; margin-left: 15px;">${step.emoji}</div>
+                    </div>
+                    <div class="step-title">${step.title}</div>
+                    <div class="step-description">${step.description}</div>
+                `;
+                
+                if (step.completed) {
+                    stepCard.style.cssText += completedStyle;
+                }
+
+                container.appendChild(stepCard);
+            });
+        }
+
+        // 단계 토글 (완료/미완료)
+        function toggleStep(index) {
+            dischargeSteps[index].completed = !dischargeSteps[index].completed;
+            renderSteps();
+            
+            // 완료 시 축하 메시지
+            if (dischargeSteps[index].completed) {
+                showMessage(`${dischargeSteps[index].title} 단계가 완료되었습니다! 👍`);
+            }
+        }
+
+        // 메시지 표시
+        function showMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: #4a90e2;
+                color: white;
+                padding: 30px 40px;
+                border-radius: 15px;
+                font-size: 22px;
+                font-weight: bold;
+                z-index: 1000;
+                text-align: center;
+                box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+                max-width: 400px;
+                line-height: 1.4;
+            `;
+            messageDiv.textContent = message;
+            document.body.appendChild(messageDiv);
+
+            setTimeout(() => {
+                document.body.removeChild(messageDiv);
+            }, 3000);
+        }
+
+        // 키보드 네비게이션 지원
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                // 탭 키 네비게이션 강화
+                const focusableElements = document.querySelectorAll('.step-card');
+                focusableElements.forEach(el => {
+                    el.style.outline = 'none';
+                });
+            }
+            
+            if (e.key === 'Enter' || e.key === ' ') {
+                if (document.activeElement.classList.contains('step-card')) {
+                    document.activeElement.click();
+                }
+            }
+        });
+
+        // 접근성 개선: 포커스 표시
+        document.addEventListener('focusin', function(e) {
+            if (e.target.classList.contains('step-card')) {
+                e.target.style.outline = '4px solid #4a90e2';
+                e.target.style.outlineOffset = '2px';
+            }
+        });
+
+        document.addEventListener('focusout', function(e) {
+            if (e.target.classList.contains('step-card')) {
+                e.target.style.outline = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
